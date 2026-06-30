@@ -1,0 +1,409 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Teach At VUS — Organic Content Performance Report</title>
+<style>
+:root{
+  --ink:#13202e;
+  --ink-soft:#4a5a6b;
+  --paper:#f6f4ef;
+  --paper-card:#ffffff;
+  --line:#dcd6c9;
+  --vus-blue:#0b4f9e;
+  --vus-blue-deep:#05305f;
+  --vus-red:#c8202f;
+  --teal:#1aa3a3;
+  --amber:#d68a1f;
+  --good:#1c8c5b;
+  --bad:#c8202f;
+  --mono: "IBM Plex Mono", "SFMono-Regular", Menlo, Consolas, monospace;
+  --serif: "Source Serif Pro", Georgia, "Times New Roman", serif;
+  --sans: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+}
+*{box-sizing:border-box; margin:0; padding:0;}
+body{background:var(--paper); color:var(--ink); font-family:var(--sans); line-height:1.55; font-size:16px;}
+.wrap{max-width:1040px; margin:0 auto; padding:0 28px;}
+.masthead{background:var(--vus-blue-deep); color:#fff; padding:64px 0 48px; position:relative; overflow:hidden;}
+.masthead::after{content:""; position:absolute; right:-120px; top:-160px; width:480px; height:480px; border-radius:50%; background:radial-gradient(circle at 30% 30%, rgba(200,32,47,0.35), transparent 70%);}
+.masthead .eyebrow{font-family:var(--mono); text-transform:uppercase; letter-spacing:0.18em; font-size:12px; color:#9fc1ea; margin-bottom:18px; display:flex; align-items:center; gap:10px;}
+.masthead .eyebrow::before{content:""; width:28px; height:2px; background:var(--vus-red); display:inline-block;}
+.masthead h1{font-family:var(--serif); font-weight:600; font-size:46px; line-height:1.12; max-width:760px; letter-spacing:-0.01em;}
+.masthead h1 em{font-style:italic; color:#9fc1ea; font-weight:400;}
+.masthead .sub{margin-top:18px; font-size:17px; color:#c9d8e9; max-width:620px;}
+.meta-row{margin-top:40px; display:flex; gap:36px; flex-wrap:wrap; border-top:1px solid rgba(255,255,255,0.18); padding-top:22px; font-family:var(--mono); font-size:12px; color:#9fc1ea; text-transform:uppercase; letter-spacing:0.06em;}
+.meta-row span b{display:block; color:#fff; font-family:var(--sans); text-transform:none; letter-spacing:0; font-size:14px; margin-top:4px;}
+.toc{background:#fff; border-bottom:1px solid var(--line); position:sticky; top:0; z-index:10;}
+.toc-inner{max-width:1040px; margin:0 auto; padding:14px 28px; display:flex; gap:22px; overflow-x:auto; font-family:var(--mono); font-size:12px; letter-spacing:0.03em;}
+.toc-inner a{color:var(--ink-soft); text-decoration:none; white-space:nowrap; padding-bottom:4px; border-bottom:2px solid transparent;}
+.toc-inner a:hover{color:var(--vus-blue); border-bottom-color:var(--vus-red);}
+section{padding:64px 0; border-bottom:1px solid var(--line);}
+section:last-of-type{border-bottom:none;}
+.sec-label{font-family:var(--mono); font-size:12px; text-transform:uppercase; letter-spacing:0.16em; color:var(--vus-red); margin-bottom:10px; display:flex; align-items:center; gap:10px;}
+.sec-label::before{content:""; width:18px; height:1px; background:var(--vus-red);}
+h2{font-family:var(--serif); font-size:32px; font-weight:600; letter-spacing:-0.01em; margin-bottom:18px; max-width:680px;}
+h3{font-family:var(--sans); font-size:18px; font-weight:700; margin:32px 0 12px; color:var(--vus-blue-deep);}
+p{color:var(--ink-soft); max-width:720px; margin-bottom:14px; font-size:15.5px;}
+p.lede{font-size:18px; color:var(--ink); max-width:700px; line-height:1.6;}
+.callout{border-left:3px solid var(--vus-red); background:#fff; padding:16px 22px; margin:22px 0; font-family:var(--serif); font-style:italic; font-size:17px; color:var(--vus-blue-deep); max-width:680px;}
+.callout b{font-style:normal; color:var(--vus-red);}
+.kpi-grid{display:grid; grid-template-columns:repeat(4, 1fr); gap:1px; background:var(--line); border:1px solid var(--line); margin-top:28px;}
+.kpi{background:#fff; padding:20px 18px;}
+.kpi .label{font-family:var(--mono); font-size:11px; text-transform:uppercase; letter-spacing:0.05em; color:var(--ink-soft);}
+.kpi .value{font-family:var(--serif); font-size:28px; font-weight:600; margin-top:6px; color:var(--ink);}
+.kpi .delta{font-family:var(--mono); font-size:12px; margin-top:6px; font-weight:600;}
+.delta.up{color:var(--good);}
+.delta.down{color:var(--bad);}
+@media(max-width:720px){.kpi-grid{grid-template-columns:repeat(2,1fr);}}
+table{width:100%; border-collapse:collapse; margin:22px 0; font-size:14.5px;}
+thead th{text-align:left; font-family:var(--mono); font-size:11px; text-transform:uppercase; letter-spacing:0.04em; color:var(--ink-soft); border-bottom:2px solid var(--ink); padding:8px 12px 10px;}
+tbody td{padding:10px 12px; border-bottom:1px solid var(--line); color:var(--ink-soft);}
+tbody tr:hover{background:#fff;}
+td.num, th.num{text-align:right; font-family:var(--mono);}
+td.name{color:var(--ink); font-weight:600;}
+.tag{display:inline-block; font-family:var(--mono); font-size:10.5px; padding:2px 7px; border-radius:2px; text-transform:uppercase; letter-spacing:0.03em;}
+.tag.over{background:#e3f3ec; color:var(--good);}
+.tag.under{background:#fbe9e9; color:var(--bad);}
+.tag.neutral{background:#eee; color:var(--ink-soft);}
+.tag.flag{background:#fdf0dd; color:var(--amber);}
+.barchart{margin:26px 0;}
+.barrow{display:grid; grid-template-columns:140px 1fr 56px; align-items:center; gap:12px; margin-bottom:10px;}
+.barrow .blabel{font-size:13px; color:var(--ink); font-weight:600;}
+.bartrack{height:22px; background:#ece8dd; position:relative; border-radius:2px; overflow:hidden;}
+.barfill{height:100%; border-radius:2px;}
+.barfill.posts{background:var(--vus-blue);}
+.barfill.reach{background:var(--teal);}
+.barrow .bval{font-family:var(--mono); font-size:12.5px; text-align:right; color:var(--ink-soft);}
+.legend{display:flex; gap:18px; font-family:var(--mono); font-size:11px; color:var(--ink-soft); margin-bottom:14px;}
+.legend span{display:inline-flex; align-items:center; gap:6px;}
+.legend i{width:10px; height:10px; display:inline-block; border-radius:2px;}
+.grid2{display:grid; grid-template-columns:1fr 1fr; gap:28px; margin-top:24px;}
+@media(max-width:760px){.grid2{grid-template-columns:1fr;}}
+.card{background:#fff; border:1px solid var(--line); padding:22px 24px;}
+.card h4{font-family:var(--sans); font-size:14px; text-transform:uppercase; letter-spacing:0.04em; color:var(--vus-blue); margin-bottom:10px;}
+.postgrid{display:grid; grid-template-columns:repeat(2,1fr); gap:16px; margin-top:20px;}
+@media(max-width:760px){.postgrid{grid-template-columns:1fr;}}
+.postcard{background:#fff; border:1px solid var(--line); padding:16px 18px; position:relative;}
+.postcard .rank{font-family:var(--serif); font-size:13px; color:#fff; background:var(--vus-blue); width:22px; height:22px; border-radius:50%; display:flex; align-items:center; justify-content:center; position:absolute; top:-10px; left:-10px;}
+.postcard.err .rank{background:var(--vus-red);}
+.postcard .ptitle{font-size:14px; font-weight:600; color:var(--ink); margin-bottom:8px; line-height:1.4;}
+.postcard .pmetrics{display:flex; gap:16px; font-family:var(--mono); font-size:12px; color:var(--ink-soft);}
+.postcard .pmetrics b{color:var(--ink); font-size:14px; display:block; font-family:var(--sans);}
+.funnel{display:flex; flex-direction:column; gap:0; margin:28px 0;}
+.funnel-row{display:grid; grid-template-columns:140px 1fr; border-left:3px solid var(--line); padding:16px 0 16px 20px; position:relative;}
+.funnel-row.A{border-left-color:var(--vus-blue);}
+.funnel-row.B{border-left-color:var(--teal);}
+.funnel-row.C{border-left-color:var(--vus-red);}
+.funnel-row.D{border-left-color:#999;}
+.funnel-stage{font-family:var(--mono); font-size:11px; text-transform:uppercase; letter-spacing:0.06em; color:var(--ink-soft); padding-top:2px;}
+.funnel-content b{display:block; font-size:15px; color:var(--ink); margin-bottom:4px;}
+.funnel-content p{margin:0; font-size:14px;}
+.action-card{background:#fff; border:1px solid var(--line); margin-bottom:18px; display:grid; grid-template-columns:64px 1fr;}
+.action-num{background:var(--vus-blue-deep); color:#fff; display:flex; align-items:center; justify-content:center; font-family:var(--serif); font-size:22px; font-weight:600;}
+.action-body{padding:20px 24px;}
+.action-body h4{font-size:17px; color:var(--ink); margin-bottom:6px; font-family:var(--sans); text-transform:none; letter-spacing:0;}
+.action-body .pri{font-family:var(--mono); font-size:10.5px; text-transform:uppercase; letter-spacing:0.05em; padding:2px 8px; border-radius:2px; margin-left:10px; vertical-align:middle;}
+.pri.high{background:#fbe9e9; color:var(--bad);}
+.pri.med{background:#fdf0dd; color:var(--amber);}
+.action-body .why{font-size:13.5px; color:var(--ink-soft); margin-top:8px; border-top:1px dashed var(--line); padding-top:8px;}
+.action-body .why b{color:var(--vus-blue);}
+footer{background:var(--vus-blue-deep); color:#9fc1ea; padding:40px 0; font-family:var(--mono); font-size:12px;}
+footer .wrap{display:flex; justify-content:space-between; flex-wrap:wrap; gap:12px;}
+.divider-note{font-family:var(--mono); font-size:12px; color:var(--ink-soft); border:1px dashed var(--line); padding:12px 16px; margin:18px 0; background:#fff;}
+.divider-note b{color:var(--vus-blue);}
+ul.clean{margin:14px 0 14px 0; padding-left:0; list-style:none; max-width:700px;}
+ul.clean li{padding-left:20px; position:relative; margin-bottom:8px; font-size:15px; color:var(--ink-soft);}
+ul.clean li::before{content:"—"; position:absolute; left:0; color:var(--vus-red);}
+</style>
+</head>
+<body>
+
+<header class="masthead">
+  <div class="wrap">
+    <div class="eyebrow">Marketing Analytics · Employer Branding</div>
+    <h1>Teach At VUS — Facebook<br><em>Organic Content</em> Performance Report</h1>
+    <p class="sub">An analysis of organic content performance on Facebook to evaluate the effectiveness of the Employer Branding strategy, identify bottlenecks, and propose concrete actions for the next phase.</p>
+    <div class="meta-row">
+      <span>Reporting Period<b>Jan – Dec 2025</b></span>
+      <span>Channel<b>Facebook · Teach At VUS</b></span>
+      <span>Total Posts<b>594 posts</b></span>
+      <span>Prepared by<b>Marketing Analytics</b></span>
+    </div>
+  </div>
+</header>
+
+<nav class="toc">
+  <div class="toc-inner">
+    <a href="#overview">01 · Overview</a>
+    <a href="#format">02 · Format</a>
+    <a href="#pillar">03 · Pillars</a>
+    <a href="#timing">04 · Timing</a>
+    <a href="#posts">05 · Post-level Evidence</a>
+    <a href="#conclusion">06 · Conclusions</a>
+    <a href="#action">07 · Action Plan</a>
+  </div>
+</nav>
+
+<main class="wrap">
+
+<section id="summary">
+  <div class="sec-label">Executive Summary</div>
+  <h2>Reach has doubled — but that's not the whole story.</h2>
+  <p class="lede">Teach At VUS achieved impressive reach growth in 2025 (+115.5%), but behind that number sits a series of warning signs: engagement per reach fell 92.7%, new followers dropped by nearly 20%, and the current content mix is allocating resources away from where the audience is actually responding.</p>
+  <p>This report walks through five layers of analysis — channel overview, content format, content pillars, posting time patterns, and individual post-level evidence — to answer one question: <b>what is actually building VUS's employer brand in the eyes of candidates, and what is just generating good-looking numbers on a dashboard?</b></p>
+  <div class="callout">Core finding: the Page already has three content formulas proven to work — <b>but they are running in isolation</b>, with no strategy connecting them into one coherent candidate journey.</div>
+</section>
+
+<section id="overview">
+  <div class="sec-label">01 — Page Overview</div>
+  <h2>Reach is climbing, but Engagement is flashing a warning</h2>
+  <p>An overview of the 8 core metrics for the channel this period, compared with the prior period:</p>
+
+  <div class="kpi-grid">
+    <div class="kpi"><div class="label">Posts Published</div><div class="value">594</div><div class="delta down">▼ -8.3%</div></div>
+    <div class="kpi"><div class="label">Total Views</div><div class="value">4.15M</div><div class="delta up">▲ +27.5%</div></div>
+    <div class="kpi"><div class="label">Organic Reach</div><div class="value">2.19M</div><div class="delta up">▲ +115.5%</div></div>
+    <div class="kpi"><div class="label">Views / Post</div><div class="value">6,985</div><div class="delta up">▲ +39.1%</div></div>
+    <div class="kpi"><div class="label">Reach / Post</div><div class="value">3,679</div><div class="delta up">▲ +135.1%</div></div>
+    <div class="kpi"><div class="label">New Followers</div><div class="value">6,774</div><div class="delta down">▼ -19.9%</div></div>
+    <div class="kpi"><div class="label">ERR</div><div class="value">2.64%</div><div class="delta down">▼ -92.7%</div></div>
+    <div class="kpi"><div class="label">CTR</div><div class="value">0.81%</div><div class="delta up">▲ +60.3%</div></div>
+  </div>
+
+  <h3>Reading the numbers: Visibility is up, Resonance is down</h3>
+  <p>Reach/Post rose 135.1% even as the number of posts fell 8.3% — a clear sign that per-post distribution efficiency has improved significantly. But <b style="color:var(--ink)">ERR fell 92.7%</b>, which is a serious signal: content is reaching more people, but isn't compelling enough to generate a reaction — not enough likes, shares, or comments to build real social proof for the employer brand.</p>
+  <p>At the same time, New Followers fell 19.9% even as reach roughly doubled. The Page is reaching more people, but not convincing enough of them to actively follow — meaning the content isn't yet giving people a strong enough reason to "stay." The one bright spot is CTR, up 60.3%, suggesting a small segment of viewers is showing genuine intent worth nurturing further.</p>
+
+  <div class="callout">The Page is winning on <b>visibility</b>, but not yet on <b>resonance</b>. For an Employer Branding objective, this is the gap that needs to close first.</div>
+</section>
+
+<section id="format">
+  <div class="sec-label">02 — Content Format Analysis</div>
+  <h2>Photo dominates distribution; Video is being used in the wrong role</h2>
+  <p>Comparing the share of posts against 4 performance metrics — Reach, Engagement, Link Clicks, and Views — across each content format.</p>
+
+  <table>
+    <thead><tr><th>Format</th><th class="num">% Posts</th><th class="num">% Reach</th><th class="num">% Engagement</th><th class="num">% Link Clicks</th><th class="num">% Views</th><th>Actual Role</th></tr></thead>
+    <tbody>
+      <tr><td class="name">Photos</td><td class="num">84.34%</td><td class="num">86.51%</td><td class="num">78.30%</td><td class="num">96.23%</td><td class="num">88.12%</td><td><span class="tag over">Distribution + Click</span></td></tr>
+      <tr><td class="name">Videos</td><td class="num">12.96%</td><td class="num">10.65%</td><td class="num">17.15%</td><td class="num">3.26%</td><td class="num">8.64%</td><td><span class="tag flag">Engagement-only</span></td></tr>
+      <tr><td class="name">Reels</td><td class="num">1.85%</td><td class="num">0.85%</td><td class="num">1.12%</td><td class="num">0.18%</td><td class="num">0.93%</td><td><span class="tag neutral">Under-tested</span></td></tr>
+      <tr><td class="name">Text</td><td class="num">0.84%</td><td class="num">1.99%</td><td class="num">3.43%</td><td class="num">0.33%</td><td class="num">2.30%</td><td><span class="tag over">High engage/post</span></td></tr>
+    </tbody>
+  </table>
+
+  <div class="grid2">
+    <div class="card"><h4>📷 Photo</h4><p style="font-size:14px;">Carries both the distribution and click-conversion role (96.23% of link clicks) — but engagement per post is lower than its post share. Photo drives people to the link, but doesn't stop them long enough to react emotionally.</p></div>
+    <div class="card"><h4>🎬 Video</h4><p style="font-size:14px;">Currently an <b>engagement champion being wasted as a reach tool</b>. Highest engagement per post (17.15% from 12.96% of posts), but only 3.26% of link clicks — video isn't yet being used for its real strength: emotional storytelling.</p></div>
+    <div class="card"><h4>📱 Reels</h4><p style="font-size:14px;">Only ~11 posts out of 594 — far too small a sample for any strategic conclusion. This format is currently neglected and needs a dedicated creative sprint (20–30 posts) before it can be properly evaluated.</p></div>
+    <div class="card"><h4>📝 Text</h4><p style="font-size:14px;">Highest engagement-per-post rate system-wide (3.43% from just 0.84% of posts), but it can't be scaled — and doesn't fit the visual storytelling language Employer Branding needs.</p></div>
+  </div>
+</section>
+
+<section id="pillar">
+  <div class="sec-label">03 — Content Pillar Analysis</div>
+  <h2>Life at VUS is under-invested; Vietnam &amp; Relocation underperforms across the board</h2>
+  <p>Mapping each pillar onto the Employer Branding funnel (Awareness → Consideration → Conversion) to identify which pillars are playing the right role, and which need restructuring.</p>
+
+  <div class="barchart">
+    <div class="legend"><span><i style="background:var(--vus-blue)"></i>% of Posts</span><span><i style="background:var(--teal)"></i>% of Organic Reach</span></div>
+
+    <div class="barrow"><div class="blabel">Teach at VUS</div><div class="bartrack"><div class="barfill posts" style="width:30.98%"></div></div><div class="bval">30.98%</div></div>
+    <div class="barrow"><div class="blabel"></div><div class="bartrack"><div class="barfill reach" style="width:30%"></div></div><div class="bval">~30%</div></div>
+
+    <div class="barrow"><div class="blabel">Life at VUS</div><div class="bartrack"><div class="barfill posts" style="width:16.84%"></div></div><div class="bval">16.84%</div></div>
+    <div class="barrow"><div class="blabel"></div><div class="bartrack"><div class="barfill reach" style="width:22.89%"></div></div><div class="bval"><b>22.89%</b></div></div>
+
+    <div class="barrow"><div class="blabel">VUS Culture &amp; Values</div><div class="bartrack"><div class="barfill posts" style="width:15.82%"></div></div><div class="bval">15.82%</div></div>
+    <div class="barrow"><div class="blabel"></div><div class="bartrack"><div class="barfill reach" style="width:15.57%"></div></div><div class="bval">15.57%</div></div>
+
+    <div class="barrow"><div class="blabel">Growth &amp; Development</div><div class="bartrack"><div class="barfill posts" style="width:13.97%"></div></div><div class="bval">13.97%</div></div>
+    <div class="barrow"><div class="blabel"></div><div class="bartrack"><div class="barfill reach" style="width:11.95%"></div></div><div class="bval">11.95%</div></div>
+
+    <div class="barrow"><div class="blabel">Vietnam &amp; Relocation</div><div class="bartrack"><div class="barfill posts" style="width:12.46%"></div></div><div class="bval">12.46%</div></div>
+    <div class="barrow"><div class="blabel"></div><div class="bartrack"><div class="barfill reach" style="width:6.32%"></div></div><div class="bval">6.32%</div></div>
+
+    <div class="barrow"><div class="blabel">People of VUS</div><div class="bartrack"><div class="barfill posts" style="width:5.56%"></div></div><div class="bval">5.56%</div></div>
+    <div class="barrow"><div class="blabel"></div><div class="bartrack"><div class="barfill reach" style="width:3.74%"></div></div><div class="bval">3.74%</div></div>
+
+    <div class="barrow"><div class="blabel">Other</div><div class="bartrack"><div class="barfill posts" style="width:4.38%"></div></div><div class="bval">4.38%</div></div>
+    <div class="barrow"><div class="blabel"></div><div class="bartrack"><div class="barfill reach" style="width:10.46%"></div></div><div class="bval"><b>10.46%</b></div></div>
+  </div>
+
+  <h3>Multi-dimensional performance matrix (Reach · Engagement · Link Clicks · Views)</h3>
+  <table>
+    <thead><tr><th>Pillar</th><th class="num">% Posts</th><th class="num">% Reach</th><th class="num">% Engage</th><th class="num">% Clicks</th><th>Role in the Funnel</th></tr></thead>
+    <tbody>
+      <tr><td class="name">Teach at VUS</td><td class="num">30.98%</td><td class="num">~30%</td><td class="num">~40%</td><td class="num">51.87%</td><td><span class="tag over">🎯 Conversion</span></td></tr>
+      <tr><td class="name">Life at VUS</td><td class="num">16.84%</td><td class="num">22.89%</td><td class="num">26.26%</td><td class="num">0.76%</td><td><span class="tag over">💛 Awareness</span></td></tr>
+      <tr><td class="name">VUS Culture &amp; Values</td><td class="num">15.82%</td><td class="num">15.57%</td><td class="num">16.32%</td><td class="num">26.49%</td><td><span class="tag over">🔗 Consideration</span></td></tr>
+      <tr><td class="name">Growth &amp; Development</td><td class="num">13.97%</td><td class="num">11.95%</td><td class="num">14.71%</td><td class="num">4.07%</td><td><span class="tag neutral">⚪ Neutral</span></td></tr>
+      <tr><td class="name">Vietnam &amp; Relocation</td><td class="num">12.46%</td><td class="num">6.32%</td><td class="num">3.29%</td><td class="num">0.54%</td><td><span class="tag under">⚠️ Underperforms across the board</span></td></tr>
+      <tr><td class="name">People of VUS</td><td class="num">5.56%</td><td class="num">3.74%</td><td class="num">4.75%</td><td class="num">0.32%</td><td><span class="tag under">⚠️ Under-invested</span></td></tr>
+      <tr><td class="name">Other</td><td class="num">4.38%</td><td class="num">10.46%</td><td class="num">4.70%</td><td class="num">6.94%</td><td><span class="tag flag">❓ Needs investigation</span></td></tr>
+    </tbody>
+  </table>
+
+  <div class="grid2">
+    <div class="card"><h4>Awareness — Life at VUS</h4><p style="font-size:14px;">Outperforms on both reach (22.89% vs. 16.84% of posts) and engagement (26.26%), yet generates only 0.76% of link clicks — the exact signature of a healthy awareness pillar. The issue: it's <b>significantly under-invested</b> relative to its actual performance.</p></div>
+    <div class="card"><h4>Consideration — VUS Culture &amp; Values</h4><p style="font-size:14px;">Drives 26.49% of link clicks from just 15.82% of posts — a clear outperformance. When audiences see culture content, they get curious and want to learn more — a clear consideration-intent signal.</p></div>
+    <div class="card"><h4>Conversion — Teach at VUS</h4><p style="font-size:14px;">Accounts for 51.87% of link clicks — correctly playing the CTA/conversion role. The risk: it occupies nearly a third of the entire content feed, which risks making the Page read as a job board rather than an appealing brand.</p></div>
+    <div class="card"><h4>Bottleneck — Vietnam &amp; Relocation</h4><p style="font-size:14px;">Underperforms on <b>every</b> metric: reach -49%, engagement -74%, link clicks -96% relative to its post share. This can't be explained away by "niche audience" alone — it points to a real content/targeting problem.</p></div>
+  </div>
+
+  <div class="callout">"Other" isn't a mis-categorization — it's a content format/tone that hasn't been formally recognized yet. This will be decoded in Section 05.</div>
+</section>
+
+<section id="timing">
+  <div class="sec-label">04 — Posting Patterns &amp; Timing</div>
+  <h2>Posting the most isn't the same as posting at the right time</h2>
+  <p>Analyzing ERR by day-of-week × posting time, and by month across the year, to identify "distribution gaps" the Page is currently missing.</p>
+
+  <table>
+    <thead><tr><th>Time Slot</th><th class="num">Fri</th><th class="num">Mon</th><th class="num">Sat</th><th class="num">Sun</th><th class="num">Thu</th><th class="num">Tue</th><th class="num">Wed</th><th class="num">Total</th></tr></thead>
+    <tbody>
+      <tr><td>00:00–02:00</td><td class="num">1.36%</td><td class="num" style="color:var(--vus-red); font-weight:700;">27.72%</td><td class="num">0.95%</td><td class="num">0.98%</td><td class="num">1.19%</td><td class="num">1.14%</td><td class="num">1.12%</td><td class="num">5.52%</td></tr>
+      <tr><td>02:00–04:00</td><td class="num">1.99%</td><td class="num" style="color:var(--vus-red); font-weight:700;">19.71%</td><td class="num">1.68%</td><td class="num">1.08%</td><td class="num">1.16%</td><td class="num">1.24%</td><td class="num">2.04%</td><td class="num">5.30%</td></tr>
+      <tr><td>04:00–06:00</td><td class="num">1.16%</td><td class="num">1.67%</td><td class="num">1.65%</td><td class="num">1.23%</td><td class="num">1.16%</td><td class="num">1.26%</td><td class="num">1.83%</td><td class="num">1.39%</td></tr>
+      <tr><td>06:00–08:00</td><td class="num">1.74%</td><td class="num">1.37%</td><td class="num">1.37%</td><td class="num">1.96%</td><td class="num">0.95%</td><td class="num">1.56%</td><td class="num">1.42%</td><td class="num">1.52%</td></tr>
+      <tr><td>16:00–18:00</td><td class="num">1.37%</td><td class="num">1.87%</td><td class="num">0.83%</td><td class="num">1.50%</td><td class="num">0.57%</td><td class="num" style="color:var(--good); font-weight:700;">3.55%</td><td class="num">0.84%</td><td class="num">1.54%</td></tr>
+      <tr style="font-weight:700;"><td>Grand Total</td><td class="num">1.54%</td><td class="num">9.44%</td><td class="num">1.18%</td><td class="num">1.40%</td><td class="num">1.10%</td><td class="num">1.16%</td><td class="num">1.47%</td><td class="num">2.64%</td></tr>
+    </tbody>
+  </table>
+
+  <div class="grid2">
+    <div class="card"><h4>🔴 Thursday — Most posts, lowest ERR</h4><p style="font-size:14px;">101 posts (the highest of the week) but ERR of only 1.10% (the lowest). The Page is currently scheduling around operational habit, not audience data.</p></div>
+    <div class="card"><h4>🟡 Monday midnight — An anomaly worth investigating</h4><p style="font-size:14px;">ERR hits 27.72% (00:00–02:00) — more than 10x the average. This could reflect an international audience in a different time zone, or simply too small a sample. It needs verification via demographics data before drawing any conclusion.</p></div>
+  </div>
+  <div class="card" style="margin-top:16px;">
+    <h4>🟢 Tuesday 16:00–18:00 — A stable, replicable bright spot</h4>
+    <p style="font-size:14px;">ERR of 3.55% — the highest of any business-hours slot, double the grand total. Unlike the Monday-midnight outlier, this is a stable behavioral signal: the audience is active right after their teaching/work day ends.</p>
+  </div>
+
+  <h3>ERR by month — a story of content quantity dilution</h3>
+  <div class="divider-note"><b>Observation:</b> When post volume spikes sharply (Jan 122 → Feb 147), ERR drops just as sharply (Index 123 → 32) and doesn't recover proportionally when volume comes back down. The ERR peak in Jun–Jul (Index 57) coincides with a moderate, stable volume (~140 posts) — not the year's highest volume.</div>
+  <p>This is a clear sign of <b style="color:var(--ink)">content quantity dilution</b> — when too much is posted in a short span, individual posts compete with each other in-feed, reducing audience response per post. For Employer Branding — where the quality of brand perception matters more than the frequency of appearance — this is an issue that needs to be addressed at the editorial-strategy level.</p>
+</section>
+
+<section id="posts">
+  <div class="sec-label">05 — Post-level Evidence</div>
+  <h2>Three proven content formulas — and one area to cut</h2>
+  <p>Cross-referencing top-reach, top-ERR, and bottom-performing posts at the individual post level to confirm (or disprove) the hypotheses drawn from the format/pillar analysis.</p>
+
+  <h3>🟦 Top 5 by Reach — The "Humor / Trend-jacking" Formula</h3>
+  <div class="postgrid">
+    <div class="postcard"><div class="rank">1</div><div class="ptitle">"Our graphic designer is on leave 😅"</div><div class="pmetrics"><div>Reach<b>41.3K</b></div><div>ERR<b>0.88%</b></div></div></div>
+    <div class="postcard"><div class="rank">2</div><div class="ptitle">"Save Hai, applying as a TA..." — HR meme parody</div><div class="pmetrics"><div>Reach<b>29.1K</b></div><div>ERR<b>0.95%</b></div></div></div>
+    <div class="postcard"><div class="rank">3</div><div class="ptitle">"8 hours and she's still not home" — relatable mom-text parody</div><div class="pmetrics"><div>Reach<b>18.9K</b></div><div>ERR<b style="color:var(--good)">2.17%</b></div></div></div>
+    <div class="postcard"><div class="rank">4</div><div class="ptitle">"Looking for the purr-fect pieces" — April Fools</div><div class="pmetrics"><div>Reach<b>18.6K</b></div><div>ERR<b>1.27%</b></div></div></div>
+  </div>
+  <p style="margin-top:18px;">4 of the top 5 reach posts are humorous, self-deprecating content riding on Vietnamese meme/pop-culture trends — not traditional recruitment announcements. This is exactly what explains "Other": <b style="color:var(--ink)">a distinct tone of voice that is outperforming everything else, yet hasn't been formally recognized as its own pillar.</b> Post #1 reached nearly 6x the page's average Reach/Post (3,679).</p>
+
+  <h3 style="margin-top:44px;">🟥 Top 5 by ERR — The "Authentic / Raw Video" Formula</h3>
+  <div class="postgrid">
+    <div class="postcard err"><div class="rank">1</div><div class="ptitle">VUS Dong Nai — Tet 2025 dance, internal video</div><div class="pmetrics"><div>Reach<b>3.2K</b></div><div>ERR<b style="color:var(--vus-red)">11.28%</b></div></div></div>
+    <div class="postcard err"><div class="rank">2</div><div class="ptitle">"No experience needed" — application guide video</div><div class="pmetrics"><div>Reach<b>4.7K</b></div><div>ERR<b style="color:var(--vus-red)">7.06%</b></div></div></div>
+    <div class="postcard err"><div class="rank">3</div><div class="ptitle">"Tet Vibes, Teacher Style" — VUS Ut Tich campus</div><div class="pmetrics"><div>Reach<b>4.9K</b></div><div>ERR<b style="color:var(--vus-red)">5.42%</b></div></div></div>
+    <div class="postcard err"><div class="rank">4</div><div class="ptitle">"Join the VUS family Ep.4" — guidance series</div><div class="pmetrics"><div>Reach<b>2.9K</b></div><div>ERR<b style="color:var(--vus-red)">4.65%</b></div></div></div>
+  </div>
+  <p style="margin-top:18px;">Top Reach and Top ERR posts <b style="color:var(--ink)">barely overlap</b> — these are two entirely different mechanisms on the News Feed. The Top ERR group consists almost entirely of lightly-edited internal video or real people speaking directly to camera. The Top Reach group reaches ~7x further, but its ERR is only about 1/5 of the Top ERR group's.</p>
+
+  <h3 style="margin-top:44px;">⬛ Bottom Performers — The Area to Cut: "Generic Lifestyle / Holiday Templates"</h3>
+  <table>
+    <thead><tr><th>Content</th><th class="num">Reach</th><th class="num">ERR</th><th>Issue</th></tr></thead>
+    <tbody>
+      <tr><td class="name">"Local Happenings" — HCMC events roundup</td><td class="num">792 – 1.5K</td><td class="num">0.14–0.51%</td><td><span class="tag under">Not connected to the employer brand</span></td></tr>
+      <tr><td class="name">"International Day of Happiness"</td><td class="num">975</td><td class="num">0.31%</td><td><span class="tag under">Generic template, lacks real people</span></td></tr>
+      <tr><td class="name">"How different countries welcome New Year"</td><td class="num">1K</td><td class="num">0.68%</td><td><span class="tag under">Infographic, not tied to VUS</span></td></tr>
+      <tr><td class="name">Referral campaign (likely boosted)</td><td class="num">8.8K</td><td class="num">0.17%</td><td><span class="tag flag">High reach / low ERR — targeting mismatch</span></td></tr>
+    </tbody>
+  </table>
+  <p>Two root causes: <b style="color:var(--ink)">(1)</b> generic city-lifestyle content that drifts away from the reason people follow a recruitment page in the first place; <b style="color:var(--ink)">(2)</b> holiday content built on graphic-design templates instead of real people — a direct comparison shows that, for the same "holiday" content type, the VUS Dong Nai Tet dance video (real people) hit 11.28% ERR versus just 0.31% for the templated Happiness Day post.</p>
+
+  <h3 style="margin-top:44px;">Four Content Groups — A Summary Map</h3>
+  <div class="funnel">
+    <div class="funnel-row A"><div class="funnel-stage">Group A</div><div class="funnel-content"><b>Humor / Trend-jacking memes</b><p>Very high reach, average ERR. Role: top-of-funnel Awareness. Example: "Our designer is on leave" (41.3K reach).</p></div></div>
+    <div class="funnel-row B"><div class="funnel-stage">Group B</div><div class="funnel-content"><b>Authentic raw video (Life at VUS)</b><p>Highest ERR system-wide, limited reach. Role: Trust &amp; Connection. Example: VUS Dong Nai Tet dance (11.28% ERR).</p></div></div>
+    <div class="funnel-row C"><div class="funnel-stage">Group C</div><div class="funnel-content"><b>Real people guiding the application process</b><p>High ERR, directly addresses candidate concerns. Role: Conversion-ready. Example: "No experience needed" (7.06% ERR).</p></div></div>
+    <div class="funnel-row D"><div class="funnel-stage">Group D ❌</div><div class="funnel-content"><b>Generic lifestyle / Holiday templates</b><p>Lowest reach, lowest ERR system-wide. Doesn't clearly serve any objective. Should be cut or completely restructured.</p></div></div>
+  </div>
+</section>
+
+<section id="conclusion">
+  <div class="sec-label">06 — Conclusions</div>
+  <h2>The Page already has the raw material for a complete Employer Branding funnel — it just hasn't been assembled</h2>
+  <p class="lede">Bringing together all five layers of analysis, three strategic conclusions stand out clearly:</p>
+
+  <ul class="clean">
+    <li><b style="color:var(--ink)">Reach and Resonance are moving in opposite directions.</b> The 115.5% reach growth is a genuine distribution achievement, but the 92.7% drop in ERR and the 19.9% decline in new followers show the content isn't yet converting that reach into real brand connection.</li>
+    <li><b style="color:var(--ink)">Three winning content formulas have been identified by the data, but they're running in isolation:</b> Meme/Humor (Awareness) → Authentic raw video (Trust) → Real-people guidance content (Conversion). No current pillar or posting schedule connects these into one coherent candidate journey.</li>
+    <li><b style="color:var(--ink)">Resources are allocated inversely to performance.</b> Life at VUS — the strongest awareness pillar — is under-invested at just 16.84% of posts, while Vietnam &amp; Relocation Support (underperforming across the board) and the "Generic Lifestyle" group still occupy a meaningful share of the posting schedule.</li>
+  </ul>
+
+  <div class="callout">The problem isn't a lack of effective content — it's the <b>absence of a content architecture</b> that connects what's already proven to work into one coherent brand story, delivered to the right people at the right time.</div>
+</section>
+
+<section id="action">
+  <div class="sec-label">07 — Action Plan</div>
+  <h2>Recommended Actions</h2>
+  <p>Five concrete actions, prioritized by impact and tied directly to the evidence presented in the sections above.</p>
+
+  <div class="action-card">
+    <div class="action-num">01</div>
+    <div class="action-body">
+      <h4>Rebalance content mix around the 3-layer funnel <span class="pri high">High Priority</span></h4>
+      <p style="font-size:14.5px; color:var(--ink-soft);">Increase the share of <b>Life at VUS</b> (Awareness) and "Authentic raw video" content, sustain <b>VUS Culture &amp; Values</b> (Consideration), and reduce pure-CTA <b>Teach at VUS</b> content to below 25% of the feed to avoid a "job board" feel.</p>
+      <div class="why"><b>Why:</b> Life at VUS outperforms by +36% on reach and +56% on engagement relative to its current post share, yet accounts for only 16.84% of posts (Section 03).</div>
+    </div>
+  </div>
+
+  <div class="action-card">
+    <div class="action-num">02</div>
+    <div class="action-body">
+      <h4>Standardize the "Authentic Raw Video" formula into a repeatable format <span class="pri high">High Priority</span></h4>
+      <p style="font-size:14.5px; color:var(--ink-soft);">Build a lightweight production process (filming at campuses, real people speaking directly to camera) into a recurring series, rather than producing it ad hoc.</p>
+      <div class="why"><b>Why:</b> The Top ERR group (5.6) is entirely raw/authentic video, averaging roughly 5x the page's overall ERR; the top post hit 11.28% ERR (Section 05).</div>
+    </div>
+  </div>
+
+  <div class="action-card">
+    <div class="action-num">03</div>
+    <div class="action-body">
+      <h4>Cut or restructure the "Generic Lifestyle / Holiday Template" group <span class="pri high">High Priority</span></h4>
+      <p style="font-size:14.5px; color:var(--ink-soft);">Discontinue the "Local Happenings" series in its current form, or re-anchor it through the lens of real VUS teachers ("a day in the life of a VUS teacher in HCMC"). Replace holiday graphic templates with real people and real moments at VUS.</p>
+      <div class="why"><b>Why:</b> This group ranks lowest on both reach and ERR (0.14–0.68%) — it doesn't clearly serve any employer-brand objective (Section 05.12).</div>
+    </div>
+  </div>
+
+  <div class="action-card">
+    <div class="action-num">04</div>
+    <div class="action-body">
+      <h4>Rebuild the posting schedule around ERR data, not operational habit <span class="pri med">Medium Priority</span></h4>
+      <p style="font-size:14.5px; color:var(--ink-soft);">Reduce Thursday volume (currently the highest but with the lowest ERR), deliberately test the Tuesday 16:00–18:00 slot, and investigate the Monday-midnight anomaly using demographic data before deciding whether to scale it.</p>
+      <div class="why"><b>Why:</b> ERR by time slot shows up to a 25x difference between the best- and worst-performing slots of the week (Section 04).</div>
+    </div>
+  </div>
+
+  <div class="action-card">
+    <div class="action-num">05</div>
+    <div class="action-body">
+      <h4>Add measurement layers to validate the remaining open hypotheses <span class="pri med">Medium Priority</span></h4>
+      <p style="font-size:14.5px; color:var(--ink-soft);">Collect additional data: audience demographics (country/time zone), CTR by pillar, negative feedback/unfollow rate, and comment sentiment — to turn current hypotheses (Vietnam &amp; Relocation, the Monday anomaly) into evidence-backed conclusions.</p>
+      <div class="why"><b>Why:</b> Some current conclusions (e.g. why ERR fell 92.7% despite rising reach) need negative-feedback data to confirm whether the cause is content quality or a platform distribution shift.</div>
+    </div>
+  </div>
+
+</section>
+
+</main>
+
+<footer>
+  <div class="wrap">
+    <span>Teach At VUS · Organic Content Performance Report</span>
+    <span>Marketing Analytics — Employer Branding</span>
+  </div>
+</footer>
+
+</body>
+</html>
